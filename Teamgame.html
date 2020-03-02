@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>팀게임!</title>
+<style type="text/css">
+body {
+	overflow: hidden;
+}
+
+#bg {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#maindiv {
+	display: block;
+	position: absolute;
+	top: 150px;
+	left: 660px;
+	width: 580px;
+	height: 300px;
+	z-index: 300;
+}
+
+#btndiv {
+	margin-left: 200px;
+}
+
+#btndiv :hover {
+	cursor: pointer;
+}
+
+#startdiv {
+	position: absolute;
+	display: none;
+	top: 300px;
+	left: 700px;
+	width: 440px;
+	height: 150px;
+	z-index: 200;
+	background: url("./startcnt.png");
+	background-position-x: 0px;
+	background-position-y: 0px;
+	background-repeat: no-repeat;
+}
+
+#enddiv {
+	display: none;
+	position: absolute;
+	top: 150px;
+	left: 660px;
+	width: 580px;
+	height: 300px;
+	z-index: 400;
+}
+
+#end {
+	margin-left: 45px;
+}
+
+#endscore {
+	margin-left: 120px;
+	margin-top: 70px;
+}
+
+#endscoretxt {
+	font-size: 20pt;
+	border: solid 0px;
+	background-color: #a9ffff;
+	outline: none;
+	text-align: center;
+}
+
+#retrydiv {
+	margin-left: 165px;
+	margin-top: 50px;
+}
+
+#retrydiv :hover {
+	cursor: pointer;
+}
+
+#count {
+	position: absolute;
+	top: 20px;
+	left: 1770px;
+	width: 120px;
+	height: 50px;
+	z-index: 100;
+}
+
+#cnttxt {
+	float: right;
+	font-size: 20pt;
+	text-align: right;
+	border: solid 0px;
+	background-color: #a9ffff;
+	outline: none;
+}
+
+#player {
+	width: 120px;
+	height: 120px;
+	position: absolute;
+	top: 580px;
+	left: 200px;
+}
+
+#run {
+	display: inline-block;
+	width: 148px;
+	height: 144px;
+	background: url("./run.png");
+	background-position-x: 0px;
+	background-position-y: 0px;
+	background-repeat: no-repeat;
+}
+
+#jump {
+	display: none;
+	width: 148px;
+	height: 144px;
+	background: url("./jump1.png");
+	background-position-x: 0px;
+	background-position-y: 0px;
+	background-repeat: no-repeat;
+}
+
+#jump2 {
+	display: none;
+	width: 148px;
+	height: 144px;
+	background: url("./jump2.png");
+	background-position-x: 0px;
+	background-position-y: 0px;
+	background-repeat: no-repeat;
+}
+
+#slide {
+	display: none;
+	width: 144px;
+	height: 57px;
+	background: url("./slide.png");
+	background-position-x: 0px;
+	background-position-y: 0px;
+	background-repeat: no-repeat;
+}
+
+#die {
+	display: none;
+	width: 142px;
+	height: 144px;
+	background: url("./die.png");
+	background-position-x: 0px;
+	background-position-y: 0px;
+	background-repeat: no-repeat;
+}
+
+#trapA {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	background: url("./trap1.png");
+	background-position-x: 0px;
+	background-position-y: 0px;
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 580px;
+	left: 1000px;
+	z-index: 100;
+}
+
+#boomA {
+	display: none;
+	width: 50px;
+	height: 50px;
+	background: url("./boom.png");
+	background-position-x: 0px;
+	background-position-y: 0px;
+	background-repeat: no-repeat;
+}
+
+#trapB {
+	display: inline-block;
+	width: 49px;
+	height: 50px;
+	background: url("./trap2.png");
+	background-position-x: 0px;
+	background-position-y: 0px;
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 400px;
+	left: 1800px;
+	z-index: 100;
+}
+
+#boomB {
+	display: none;
+	width: 50px;
+	height: 50px;
+	background: url("./boom.png");
+	background-position-x: 0px;
+	background-position-y: 0px;
+	background-repeat: no-repeat;
+}
+</style>
+<script type="text/javascript" src="./jquery/jquery-1.12.4.js"></script>
+
+</head>
+<body>
+	<div id="maindiv">
+		<!-- 시작버튼과 로고 -->
+		<div id="titlediv">
+			<img src="title.png" />
+		</div>
+		<div id="btndiv">
+			<img src="start.png" />
+		</div>
+	</div>
+	<div id="enddiv">
+		<!-- 게임오버 -->
+		<div id="end">
+			<img src="end.png" />
+		</div>
+		<div id="endscore">
+			<input type="text" id="endscoretxt" readonly="readonly" value="0" />
+		</div>
+		<div id="retrydiv">
+			<!-- 다시시작 -->
+			<img src="retry.png" />
+		</div>
+	</div>
+	<div id="startdiv">
+		<!-- 시작 카운트 -->
+	</div>
+	<div id="count">
+		<!-- 점수 -->
+		<input type="text" id="cnttxt" readonly="readonly" value="0" />
+	</div>
+	<div id="bg">
+		<!-- 배경 -->
+		<img src="bg.png" />
+	</div>
+	<div id="player">
+		<!-- 캐릭터 -->
+		<div id="run"></div>
+		<div id="jump"></div>
+		<div id="jump2"></div>
+		<div id="slide"></div>
+		<div id="die"></div>
+	</div>
+	<div id="trapA">
+		<!-- 함정 -->
+		<div id="boomA"></div>
+	</div>
+	<div id="trapB">
+		<div id="boomB"></div>
+	</div>
+
+	<script type="text/javascript">
+// 플레이어의 좌표 변수
+var px = 200;
+var py = 580;
+var px2 = 300;
+var py2 = 700;
+
+// 플레이어 피격 변수
+var pxx = 240;
+
+//배경 좌표
+var bx = 0;
+var by = 0;
+
+// 플레이어의 크기 변수
+var pw = 148;
+var ph = 144;
+
+// 지뢰의 좌표 변수
+var tx = 1000;
+var ty = 670;
+var tx2 = 1025;
+var ty2 = 695;
+
+var t2x = 1580;
+var t2y = 580;
+var t2x2 = 1605;
+var t2y2 = 605;
+
+// 인터벌 변수들
+var interval;
+var intervaljump;
+var intervalrun;
+var intervalstartcnt;
+var intervalstart;
+var intervalcnt;
+var intervaltrapA;
+var intervaltrapB;
+var intervalboom;
+
+// 플레이어 움직임
+var jumpfuncX = 0;
+var jumpfuncY = 0;
+var dbljumpfuncX = 0;
+var dbljumpfuncY = 0;
+var runX = 0;
+var runY = 0;
+var startcntX = 0;
+var startcntY = 0;
+var trapX = 0;
+var trapY = 0;
+var trap2X = 0;
+var trap2Y = 0;
+var boomX = 0;
+
+// 점수
+var cnt = 0;
+
+// 게임 시작 유무
+var a = 0;
+
+var keypress = {}; // 어떤 키가 눌려 있는지 저장
+var playx = [200, 300];
+var playy = [580, 700];
+var jumpFlag = false;
+var doubleJumpFlag = false;
+var doubleJumpFinishFlag = false;
+var slideFlag = false;
+
+// 지뢰와 플레이어의 위치
+$("#trapA").css("left", tx + "px");
+$("#trapA").css("top", ty + "px");
+$("#trapB").css("left", t2x + "px");
+$("#trapB").css("top", t2y + "px");	
+$("#player").css("top", py + "px");
+$("#player").css("left", px + "px");
+
+// 플레이어의 크기
+$("#player").css("height", ph + "px");
+
+// 플레이어 내의 div의 변수
+var jump = document.getElementById("jump");
+var run = document.getElementById("run");
+var die = document.getElementById("die");
+
+//플레이어, 트랩 등의 id변수
+var player = document.getElementById("player");
+var trap = document.getElementById("trapA");
+var trap2 = document.getElementById("trapB");
+var maindiv = document.getElementById("maindiv");
+var startdiv = document.getElementById("startdiv");
+var boom1 = document.getElementById("boomA");
+var boom2 = document.getElementById("boomB");
+var enddiv = document.getElementById("enddiv");
+var endscoretxt = document.getElementById("endscoretxt");
+var cnttxt = document.getElementById("cnttxt");
+
+$(document).ready(function() {
+	
+	// 페이지가 로딩되면 플레이어는 달리는 모션을 반복
+	intervalrun = setInterval(run, 100);
+	
+	// 시작 버튼 클릭시 동작 기능
+	$("#btndiv").on("click", function() {
+		maindiv.style.display = 'none';
+		startdiv.style.display = 'block';
+		
+		intervalstartcnt = setInterval(startcnt, 1000);		
+	});
+	
+	$("#retrydiv").on("click", function() {
+		    location.reload();
+	});
+	
+	setInterval(function(){ // 주기적으로 검사
+	      if(keypress['87']) { // up - w
+	         if(!jumpFlag) {
+	            jumpFlag = true;
+	            if(!doubleJumpFlag) {
+	               $("#run").css("display", "none");
+	               $("#jump").css("display", "inline-block");
+	               $("#jump2").css("display", "none");
+	               $("#slide").css("display", "none");
+	               console.log(playy[0]);
+	               $("#player").animate({
+	                  top : "480px"
+	               }, 220).animate({
+	                  top : "580px"
+	               }, 220, function() {
+	                  jumpFlag = false;
+	                  $("#run").css("display", "inline-block");
+	                  $("#jump").css("display", "none");
+	                  $("#jump2").css("display", "none");
+	                  $("#slide").css("display", "none");
+	               });
+	            }
+	         } else {
+	            if(doubleJumpFlag) {
+	               doubleJumpFlag = false;
+	               doubleJumpFinishFlag = true;
+	               $("#run").css("display", "none");
+	               $("#jump").css("display", "none");
+	               $("#jump2").css("display", "inline-block");
+	               $("#slide").css("display", "none");
+	               $("#player").stop();
+	               // + 130
+	               var loseTime = Math.round((580 - $("#player").css("top").replace("px", "") * 1) / 220);
+	            
+	               $("#player").animate({
+	                  top : "-=130px"
+	               }, 220).animate({
+	                  top : "580px"
+	               }, 220 + loseTime, function() {
+	                  jumpFlag = false;
+	                  doubleJumpFinishFlag = false;
+	                  $("#run").css("display", "inline-block");
+	                  $("#jump").css("display", "none");
+	                  $("#jump2").css("display", "none");
+	                  $("#slide").css("display", "none");
+	               });
+	            }
+	         }
+	      } else {
+	         if(jumpFlag && !doubleJumpFinishFlag) {
+	            doubleJumpFlag = true;
+	         } else {
+	        	doubleJumpFlag = false;
+	         }
+	      }
+			if(keypress['83']) {
+	    	  if(!slideFlag) {
+	    		  slideFlag = true;
+	    		  if(!jumpFlag&&!doubleJumpFlag) {
+	    				  $("#run").css("display", "none");
+		                  $("#jump").css("display", "none");
+		                  $("#jump2").css("display", "none");
+		                  $("#slide").css("display", "inline-block");
+	    				    playy[0] = 670;
+	    				    $("#player").css("top", playy[0].toString() + "px");
+	    		  	}
+	    		} else {
+	    			if(slideFlag) {
+	    				slideFlag = false;
+	    			$("body").on("keyup", function(event) {
+	    				if(event.keyCode == 83) {
+	    					$("#run").css("display", "inline-block");
+	  	                  	$("#jump").css("display", "none");
+	  	                  	$("#jump2").css("display", "none");
+	  	                 	 $("#slide").css("display", "none");
+	    					playy[0] = 580;
+	    					console.log(playy[0]);
+	    				    $("#player").css("top", playy[0].toString() + "px");
+	    					}
+	    				});
+	    			}
+	    		}
+			}
+	   }, 30); // 매 0.01 초마다 실행   
+	   
+	   //충돌인터발
+	   setInterval(function() {
+	   /*    console.log($("#player").css("top").replace("px", "").toString() + "," + $("#player").css("left").replace("px", "").toString()); */
+	      playx[$("#player").css("left").replace("px", "").toString()] = true;
+	      playx[0] = ($("#player").css("left").replace("px", "").toString())*1 + 37;
+	      playx[1] = ($("#player").css("left").replace("px", "").toString())*1 + 111;
+	      playy[$("#player").css("top").replace("px", "").toString()] = true;
+	      playy[0] = $("#player").css("top").replace("px", "").toString();
+	      playy[1] = ($("#player").css("top").replace("px", "").toString())*1 + 144;
+	   }, 10);
+	   
+	   $("body").on("keydown", function(event) {
+		      keypress[event.which.toString()] = true;
+		   });
+		   $("body").on("keyup", function(event) {
+		      keypress[event.which.toString()] = false;
+		   });
+	
+	// 321시작을 위한 함수
+	function startcnt() {
+        if( startcntX <= 0) {
+        	startcntX -= 450;
+        	console.log(startcntX);
+        }
+        if(startcntX == -1800) {
+			clearInterval(intervalstartcnt);
+			intervalstartcnt = null;
+			startdiv.style.display = 'none';
+			startcntX = 0;
+			intervalstart = setInterval(start, 15);
+			intervalcnt = setInterval(count, 10);
+			intervaltrapA = setInterval(trapA, 100);
+			intervaltrapB = setInterval(trapB, 100);
+		}
+        $("#startdiv").css("background-position-x", startcntX + "px");
+        $("#startdiv").css("background-position-y", startcntY + "px");
+    }
+	
+	// 점수를 위한 함수
+	function count() {
+		cnttxt = document.getElementById("cnttxt");
+		
+		cnt += 1;
+		cnttxt.value = cnt;
+	}
+	
+	// 달리기 모션을 위한 함수
+	function run() {
+        if( runX <= 0) {
+            runX -= 148;
+        }
+        if(runX <= -1184) {
+            runX = 0;
+        }
+        $("#run").css("background-position-x", runX + "px");
+        $("#run").css("background-position-y", runY + "px");
+    }
+	
+	// 지상폭탄의 모션을 위한 함수
+	function trapA() {
+	       if( trapX <= 0) {
+	           trapX -= 50;
+	       }
+	       if(trapX <= -350) {
+	           trapX = 0;
+	       }
+	       $("#trapA").css("background-position-x", trapX + "px");
+	       $("#trapA").css("background-position-y", trapY + "px");	     
+	   }  
+	
+	// 지상폭탄의 모션을 위한 함수
+	function boom() {
+	       if( boomX <= 0) {
+	           boomX -= 50;
+	       }
+	       if(boomX <= -150) {
+	    	   clearInterval(intervalboom);
+	    	   intervalboom = null;
+	       }
+	       $("#boomA").css("background-position-x", boomX + "px");	
+	       $("#boomB").css("background-position-x", boomX + "px");
+	   }
+	
+	function trapB() {
+	       if( trap2X <= 0) {
+	       	trap2X -= 49;
+	       }
+	       if(trap2X <= -294) {
+	       	trap2X = 0;
+	       }
+	       $("#trapB").css("background-position-x", trap2X + "px");
+	       $("#trapB").css("background-position-y", trap2Y + "px");
+	   }  
+	
+	// 점프 모션을 위한 함수
+	function jumpfunc() {
+        if( jumpfuncX <= 0) {
+        	jumpfuncX -= 148;
+        }
+        if(jumpfuncX <= -740) {
+        	jumpfuncX = 0;
+        }
+
+        $("#jump").css("background-position-x", jumpfuncX+"px");
+        $("#jump").css("background-position-y", jumpfuncY+"px");
+    }
+	
+	function dbljumpfunc() {
+        if( dbljumpfuncX <= 0) {
+        	dbljumpfuncX -= 148;
+        }
+        if(dbljumpfuncX <= -740) {
+        	dbljumpfuncX = 0;
+        }
+
+        $("#jump2").css("background-position-x", dbljumpfuncX+"px");
+        $("#jump2").css("background-position-y", dbljumpfuncY+"px");
+    }
+
+	// 게임 동작을 위한 함수
+	function start() {
+		a = 1;
+		
+		tx -= 10;
+		tx2 -= 10;
+		t2x -= 10;
+		t2x2 -= 10;
+		bx -= 10;
+		
+		if(((playx[0] < tx && playx[1] > tx) && (playy[0] < ty && playy[1] > ty)) || ((playx[0] < tx2 && playx[1] > tx2) && (playy[0] < ty2 && playy[1] > ty2))) {
+			a = 0;
+			clearInterval(intervalrun);
+			clearInterval(intervalstart);
+			clearInterval(intervalcnt);
+			clearInterval(intervaltrapA);
+			clearInterval(intervaltrapB);
+			clearInterval(intervaljump);
+			trap.style.background = "url(\"\")";
+			boom1.style.display = 'block';
+			intervalboom = setInterval(boom, 100);
+			enddiv.style.display = 'block';
+			endscoretxt.value = "점수는 " + cnt + "점 입니다."
+			
+		} else if(((playx[0] < t2x && playx[1] > t2x) && (playy[0] < t2y && playy[1] > t2y)) || ((playx[0] < t2x2 && playx[1] > t2x2) && (playy[0] < t2y2 && playy[1] > t2y2))) {
+			a = 0;
+			clearInterval(intervalrun);
+			clearInterval(intervalstart);
+			clearInterval(intervalcnt);
+			clearInterval(intervaltrapA);
+			clearInterval(intervaltrapB);
+			trap2.style.background = "url(\"\")";
+			boom2.style.display = 'block';
+			intervalboom = setInterval(boom, 100);
+			enddiv.style.display = 'block';
+			endscoretxt.value = "점수는 " + cnt + "점 입니다."
+			
+		}
+		
+		if(tx < 0) {
+			tx = 1000;
+			tx2 = 1025;
+		}
+		if(t2x < 0) {
+			t2x = 1700;
+			t2x2 = 1725;
+		}
+		if(bx < -5105) {
+			bx = -3320;
+		}
+		$("#trapA").css("left", tx + "px");
+		$("#trapB").css("left", t2x + "px");
+		$("#bg").css("left", bx + "px");
+	}
+});
+</script>
+</body>
+</html>
